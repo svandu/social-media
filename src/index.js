@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const connectDB = require("./db/connection.js")
 
 const app = express();
-const PORT = 8000;
 
 /**
  * It onfigures the use of body-parser middleware to parse JSON-formatted data in incoming requests.
@@ -26,7 +25,5 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
 
 connectDB()
-  .then(() => app.listen(PORT, () => console.log(`Server running on ${PORT}`)))
+  .then(() => app.listen(PORT, () => console.log(`Server running on ${process.env.PORT}`)))
   .catch((error) => console.log(error.message));
-
-
