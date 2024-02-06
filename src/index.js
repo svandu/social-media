@@ -1,6 +1,12 @@
+const dotenv = require("dotenv");
 const express = require("express");
 const bodyParser = require("body-parser");
-const connectDB = require("./db/connection.js")
+const connectDB = require("./db/connection.js");
+
+/**
+ * Load all the envirnoment variables on the initial load of first entry point
+*/
+dotenv.config();
 
 const app = express();
 
@@ -21,9 +27,18 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
-// const CONNECTION_URL = "mongodb://localhost:27017/social-media";
+//routes
 
+const postRoute = require("./routers/post.route.js");
+
+app.use("/api/v1", postRoute);
 
 connectDB()
-  .then(() => app.listen(PORT, () => console.log(`Server running on ${process.env.PORT}`)))
-  .catch((error) => console.log(error.message));
+  .then(() => {
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server is running at port: ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("MONGODB Connection FAILED !!!", err);
+  });
