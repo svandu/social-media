@@ -12,8 +12,14 @@ const getPosts = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const post = req.body;
-  const newPost = new Post(post);
+  const { title, message, tags, selectedFile } = req.body;
+  const newPost = new Post({
+    title,
+    message,
+    tags,
+    selectedFile,
+    creator: newPost.user._id, // Assuming req.userId is the authenticated user's ID
+  });
 
   try {
     await newPost.save();
@@ -25,20 +31,19 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   const { id: _id } = req.params;
-  const post = req.body;
+  const { title, message, creator, selectedFile, tags } = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("No post with that id");
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send(`No post with this ${id}`);
 
   // {title, name, message, tags}
+  const updatePost = { creator, title, message, tags, selectedFile, _id: id };
 
-  const updatedPost = await Post.findByIdAndUpdate(
-    _id,
-    { ...post, _id },
-    { new: true }
-  );
+  await Post.findByIdAndUpdate(_id, updatePost, {
+    new: true,
+  });
 
-  res.json(updatedPost);
+  res.json(updatePost);
 };
 
 const deletePost = async (req, res) => {
@@ -55,17 +60,25 @@ const deletePost = async (req, res) => {
 
 const likePost = async (req, res) => {
   const { id } = req.params;
+
+  if (!req.userId) return res.json({ message: "Unauthenticated" });
+
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send("No post with that id");
 
   const post = await Post.findById(id);
-  const updatePost = await Post.findByIdAndUpdate(
-    id,
-    {
-      likeCount: post.likeCount + 1,
-    },
-    { new: true }
-  );
+
+  const index = post.likes.findIndex((id) => id === String(req.userId));
+
+  if (index === -1) {
+    //like the post
+    post.likes.post(req.userId);
+  } else {
+    //dislike the post
+    post.likes = post.likes.filter((id) => id !== String(req.userId));
+  }
+
+  const updatePost = await Post.findByIdAndUpdate(id, post, { new: true });
 
   res.json(updatePost);
 };
