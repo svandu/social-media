@@ -30,8 +30,10 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 //routes
 
 const postRoute = require("./routers/post.route.js");
+const userRoute = require("./routers/users.route.js")
 
-app.use("/api/v1", postRoute);
+app.use("/api/v1/posts", postRoute);
+app.use("/api/v1/users", userRoute);
 
 connectDB()
   .then(() => {
