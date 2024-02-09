@@ -11,6 +11,25 @@ const getPosts = async (req, res) => {
   }
 };
 
+//QUERY -> /posts?page=1 -> page = 1
+//PARAMS -> /posts/:id -> id = 123
+
+const getPostBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+
+  try {
+    const title = new RegExp(searchQuery, "i"); // test Test TEST all are same and equals to 'test'
+
+    const posts = await Post.find({
+      $or: [{ title }, { tags: { $in: tags.split(",") } }],
+    });
+
+    res.json({ data: posts });
+  } catch (error) {
+    res.status(404).json({message: error.message});
+  }
+};
+
 const createPost = async (req, res) => {
   const { title, message, tags, selectedFile } = req.body;
   const newPost = new Post({
@@ -18,7 +37,7 @@ const createPost = async (req, res) => {
     message,
     tags,
     selectedFile,
-    creator: newPost.user._id, // Assuming req.userId is the authenticated user's ID
+    creator: req.userId, // Assuming req.userId is the authenticated user's ID
   });
 
   try {
@@ -84,9 +103,10 @@ const likePost = async (req, res) => {
 };
 
 module.exports = {
+  getPostBySearch,
   getPosts,
   createPost,
   updatePost,
   deletePost,
-  likePost,
+  likePost
 };
