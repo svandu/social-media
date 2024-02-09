@@ -38,6 +38,9 @@ It is a project on social media platform where user can signin and login. It all
     MONGODB_URI=mongodb://localhost:27017
     DB_NAME=social-media
     PORT=8000
+
+    SECRET_KEY=your-secret-key
+    SECRET_KEY_EXPIRY=expiry-time
 ```
 
 ### Run the App:
