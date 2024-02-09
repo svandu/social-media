@@ -18,6 +18,15 @@ const getPostBySearch = async (req, res) => {
   const { searchQuery, tags } = req.query;
 
   try {
+
+    /**
+     * RegExp: It uses the searchQuery parameter as the pattern to match, and the "i" flag which makes the regular expression case-insensitive.
+     * The $or operator performs a logical OR operation on an array of two or more query expressions.
+     * The $in operator selects the documents where the value of a field equals any value in the specified array.
+     * Post.find statement: It searches for posts where either the title matches the searchQuery pattern (case-insensitive) or the tags array contains any of the tags provided in the tags parameter. 
+     * The tags.split(",") method splits the tags string into an array using commas as separators.
+     */
+
     const title = new RegExp(searchQuery, "i"); // test Test TEST all are same and equals to 'test'
 
     const posts = await Post.find({
@@ -26,7 +35,7 @@ const getPostBySearch = async (req, res) => {
 
     res.json({ data: posts });
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -102,11 +111,25 @@ const likePost = async (req, res) => {
   res.json(updatePost);
 };
 
+const commentPost = async (req, res) => {
+  const { id } = req.params;
+  const { value } = req.body;
+
+  const post = await Post.findById(id);
+
+  post.comments.push(value); // here the values of the post is push in the comments array 
+
+  const updatePost = await Post.findByIdAndUpdate(id, post, { new: true });
+
+  res.json(updatePost);
+};
+
 module.exports = {
   getPostBySearch,
   getPosts,
   createPost,
   updatePost,
   deletePost,
-  likePost
+  likePost,
+  commentPost,
 };
