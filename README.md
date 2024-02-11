@@ -4,6 +4,8 @@
 
 It is a project on social media platform where user can signin and login. It allows user to perform CRUD operation on post and like the post.
 
+[API Link](https://github.com/svandu/social-media/blob/main/API.md)
+
 ## Feature
 
 - User Authentication: Users can sign up for a new account and log in securely.
