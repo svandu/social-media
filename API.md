@@ -1,4 +1,4 @@
-# Social Media
+# Social Media API
 
 ## Table of contents
 
