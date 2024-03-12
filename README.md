@@ -1,5 +1,9 @@
 # Social Media App
 
+## API LINK
+
+[API LINK](https://speeding-firefly-532427.postman.co/documentation/21676004-e140c936-93d8-4f4d-9339-34e01cde7779/publish?workspaceId=6195eaf9-dafc-4020-8d2f-e7f876fd490a)
+
 ## Description
 
 It is a project on social media platform where user can signin and login. It allows user to perform CRUD operation on post and like the post.
@@ -30,9 +34,11 @@ It is a project on social media platform where user can signin and login. It all
 ```
 
 ### Install Dependencies
+
 `npm install`
 
 ### Envirnoment Variables:
+
 - Create a .env.local file in the project root.
 - Add the following wnvironment variables:
 
@@ -46,7 +52,9 @@ It is a project on social media platform where user can signin and login. It all
 ```
 
 ### Run the App:
+
 `npm run dev`
 
 ### Open in Browser
+
 `Open your browser and go to http://localhost:8000`
