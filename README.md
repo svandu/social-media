@@ -2,7 +2,7 @@
 
 ## API LINK
 
-[API LINK](https://speeding-firefly-532427.postman.co/documentation/21676004-e140c936-93d8-4f4d-9339-34e01cde7779/publish?workspaceId=6195eaf9-dafc-4020-8d2f-e7f876fd490a)
+[API LINK](https://documenter.getpostman.com/view/21676004/2sA2xmUAuJ)
 
 ## Description
 
